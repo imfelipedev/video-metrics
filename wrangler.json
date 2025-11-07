@@ -1,0 +1,16 @@
+{
+  "compatibility_date": "2025-10-08",
+  "main": "src/index.ts",
+  "name": "video-metrics",
+  "upload_source_maps": true,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_id": "bd2646af-b019-44a1-a64e-bbdc2d7157fa",
+      "database_name": "video-metrics"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}
