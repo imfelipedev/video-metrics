@@ -124,12 +124,13 @@ async function handleMetricGet(request: Request, env: Env) {
   const video_id = request.url.split("/metric/")[1];
 
   const result = await env.DB.prepare(
-    `SELECT video_id, COUNT(*) AS unique_users, SUM(last_watch_time) AS total_watch_time
+    `SELECT ip_hash, last_watch_time, updated_at
      FROM metrics
-     WHERE video_id = ?1`
-  ).bind(video_id).first();
+     WHERE video_id = ?1
+     ORDER BY updated_at ASC`
+  ).bind(video_id).all();
 
-  return Response.json(result || {});
+  return Response.json(result.results ?? []);
 }
 
 /* ------------------------------------------------------------
@@ -139,12 +140,13 @@ async function handleQuizMetricGet(request: Request, env: Env) {
   const quiz_id = request.url.split("/quiz_metric/")[1];
 
   const result = await env.DB.prepare(
-    `SELECT quiz_id, COUNT(*) AS total_entries, AVG(score) AS avg_score, MAX(score) AS best_score
+    `SELECT ip_hash, score, updated_at
      FROM quiz_metrics
-     WHERE quiz_id = ?1`
-  ).bind(quiz_id).first();
+     WHERE quiz_id = ?1
+     ORDER BY updated_at ASC`
+  ).bind(quiz_id).all();
 
-  return Response.json(result || {});
+  return Response.json(result.results ?? []);
 }
 
 /* ------------------------------------------------------------
